@@ -1,10 +1,10 @@
 # PPFAnalyticalFormulaDemo
  解析公式并计算公式字符串
 
-##怎么引入
+## 怎么引入
 pod 'PPFAnalyticalFormula'
 
-##怎么用
+## 怎么用
 
 #### 公式
 ```
