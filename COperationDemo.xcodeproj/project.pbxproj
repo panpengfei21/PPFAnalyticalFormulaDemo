@@ -14,6 +14,7 @@
 		04217E27231E0BEC008BDD33 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04217E25231E0BEC008BDD33 /* LaunchScreen.storyboard */; };
 		04217E32231E0C59008BDD33 /* PPFAnalyticalFormula.c in Sources */ = {isa = PBXBuildFile; fileRef = 04217E31231E0C59008BDD33 /* PPFAnalyticalFormula.c */; };
 		04217E35231E0E86008BDD33 /* PPFStack.c in Sources */ = {isa = PBXBuildFile; fileRef = 04217E34231E0E86008BDD33 /* PPFStack.c */; };
+		043B6BE42327840B00BE082A /* PPFTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 043B6BE32327840B00BE082A /* PPFTest.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		04217E31231E0C59008BDD33 /* PPFAnalyticalFormula.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = PPFAnalyticalFormula.c; sourceTree = "<group>"; };
 		04217E33231E0E86008BDD33 /* PPFStack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPFStack.h; sourceTree = "<group>"; };
 		04217E34231E0E86008BDD33 /* PPFStack.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = PPFStack.c; sourceTree = "<group>"; };
+		043B6BE22327840B00BE082A /* PPFTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PPFTest.h; sourceTree = "<group>"; };
+		043B6BE32327840B00BE082A /* PPFTest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = PPFTest.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,8 @@
 				04217E23231E0BEC008BDD33 /* Assets.xcassets */,
 				04217E25231E0BEC008BDD33 /* LaunchScreen.storyboard */,
 				04217E28231E0BEC008BDD33 /* Info.plist */,
+				043B6BE22327840B00BE082A /* PPFTest.h */,
+				043B6BE32327840B00BE082A /* PPFTest.c */,
 			);
 			path = COperationDemo;
 			sourceTree = "<group>";
@@ -159,6 +164,7 @@
 				04217E32231E0C59008BDD33 /* PPFAnalyticalFormula.c in Sources */,
 				04217E1F231E0BE9008BDD33 /* ViewController.swift in Sources */,
 				04217E1D231E0BE9008BDD33 /* AppDelegate.swift in Sources */,
+				043B6BE42327840B00BE082A /* PPFTest.c in Sources */,
 				04217E35231E0E86008BDD33 /* PPFStack.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

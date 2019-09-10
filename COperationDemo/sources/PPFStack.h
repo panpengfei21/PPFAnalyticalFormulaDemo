@@ -56,4 +56,7 @@ StackData * top(PPFStack *stack);
 /// 输出,头一个开始
 void printStack(PPFStack *stack);
 
+/// 释放栈
+void freeStack(PPFStack *stack);
+
 #endif /* PPFStack_h */

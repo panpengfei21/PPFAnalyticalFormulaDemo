@@ -91,7 +91,6 @@ StackData * pop(PPFStack *stack) {
 void pushString(PPFStack *stack,const char c) {
     /// 初始化一个栈数据
     StackData *data = (StackData *)malloc(sizeof(StackData));
-    
     data->opertor = c;
     data->type = 1;
     
@@ -105,6 +104,18 @@ void pushFloat(PPFStack *stack,double number) {
     data->type = 2;
     
     pushStackData(stack, data);
+}
+
+/// 释放栈
+void freeStack(PPFStack *stack) {
+    if (!stack) {
+        return;
+    }
+    while (!isEmpty(stack)) {
+        StackData *data = pop(stack);
+        free(data);
+    }
+    free(stack);
 }
 
 /// 打印栈,从底端开始

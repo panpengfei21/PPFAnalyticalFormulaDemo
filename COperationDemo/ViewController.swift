@@ -16,12 +16,16 @@ class ViewController: UIViewController {
 
 
     @IBAction func tap(_ sender: Any) {
-        test(str: "((1-2*7))/ ( 1+1) *4+( 1 * 9 )-(23*10-2)")
+//        test1(str: "((1-2*7))/ ( 1+1) *4+( 1 * 9 )-(23*10-2)")
 //        test(str: "(1-2*7)/1*4")
 //        test(str: "((1-2*7))/(2+1)")
+                test1(str: "1+1")
+        //        test1(str: "1+2*(3+3)*2")
+
+        test();
     }
     
-    func test(str:String) {
+    func test1(str:String) {
         let s = UnsafeMutablePointer(mutating: NSString(string: str).utf8String)
         var error:Int32 = 0
         var res:Double = 0;

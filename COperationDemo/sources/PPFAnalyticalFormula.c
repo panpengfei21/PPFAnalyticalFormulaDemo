@@ -71,22 +71,15 @@ int checkNumber(char *num,int length) {
 double operator(double lhs,char op,double rhs,int *error) {
     *error = 0;
     switch (op) {
-        case ADD:
-            *error = 0;
-            return lhs + rhs;
-        case SUB:
-            *error = 0;
-            return lhs - rhs;
-        case MUL:
-            *error = 0;
-            return lhs * rhs;
+        case ADD:  return lhs + rhs;
+        case SUB:  return lhs - rhs;
+        case MUL:  return lhs * rhs;
         case DIV:{
             if (isZero(rhs)) {
                 *error = 4;
                 printf("除数不能为零,error = 4.\n");
                 return 0;
             }else{
-                *error = 0;
                 return lhs / rhs;
             }
         }
@@ -102,6 +95,7 @@ double operator(double lhs,char op,double rhs,int *error) {
 
 /// 运算前面的 secOP只能为加,减,乘,除
 void operatorPre(PPFStack *stack,double rhs,char secOP,int *error) {
+    *error = 0;
     StackData *opData = pop(stack);
     for (; opData && opData->type == 1 && opData->opertor != LPar; opData = pop(stack)) {///如果栈顶一个运算符
         switch (secOP) {
@@ -110,18 +104,20 @@ void operatorPre(PPFStack *stack,double rhs,char secOP,int *error) {
                 StackData *lhsData = pop(stack);
                 if (!lhsData || lhsData->type != 2) {
                     *error = 6;
+                    freeStack(stack);
                     printf("程序运行出错.这里不应该不是数字 error = 6");
                     return;
                 }
                 double lhs = lhsData->number;
                 double res = operator(lhs, opData->opertor, rhs, error);
+                free(opData);
+                free(lhsData);
+                
                 if (*error != 0) {
+                    freeStack(stack);
                     return;
                 }
                 rhs = res;
-                
-                free(opData);
-                free(lhsData);
             }
                 break;
             case DIV:
@@ -137,22 +133,24 @@ void operatorPre(PPFStack *stack,double rhs,char secOP,int *error) {
                         StackData *lhsData = pop(stack);
                         if (!lhsData || lhsData->type != 2) {
                             *error = 6;
+                            freeStack(stack);
                             printf("程序运行出错.这里不应该不是数字 error = 6");
                             return;
                         }
                         double lhs = lhsData->number;
                         double res = operator(lhs, opData->opertor, rhs, error);
+                        free(opData);
+                        free(lhsData);
                         if (*error != 0) {
+                            freeStack(stack);
                             return;
                         }
                         rhs = res;
-                        
-                        free(opData);
-                        free(lhsData);
                     }
                         break;
                     default:
                         *error = 11;
+                        freeStack(stack);
                         printf("这里出错%c不能作为运算符 error = 11",opData->opertor);
                         return;
                 }
@@ -160,6 +158,7 @@ void operatorPre(PPFStack *stack,double rhs,char secOP,int *error) {
                 break;
             default:{
                 *error = 12;
+                freeStack(stack);
                 printf("这里出错%c不能作为运算符 error = 12",secOP);
                 return;
             }
@@ -171,7 +170,6 @@ end:
     }
     pushFloat(stack, rhs);
     pushString(stack, secOP);
-    *error = 0;
     return;
 }
 
@@ -267,6 +265,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
             if (preIsRPar) {
                 printf("数字不能直接加右括号后面. error = 8\n");
                 *error = 8;  //出错
+                freeStack(stack);
                 return;
             }else{
                 addCharToList(num, array[i], &numLen);
@@ -275,6 +274,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
             if (numLen == 0) {
                 printf("数字不能以\".\"开头. error = 1\n");
                 *error = 1;  //出错
+                freeStack(stack);
                 return;
             }else{
                 addCharToList(num, array[i], &numLen);
@@ -290,12 +290,14 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
                     }else{
                         printf("\"%c\"不能和\"%c\"放在一起..error = 3\n",tmpChar,data->opertor);
                         *error = 3;
+                        freeStack(stack);
                         return;
                     }
                 }else if (!data){
                     if (tmpChar == DIV || tmpChar == MUL) {
                         printf("\"%c\"不能放在首位.error = 2\n",tmpChar);
                         *error = 2;
+                        freeStack(stack);
                         return;
                     }else{
                         addCharToList(num, tmpChar, &numLen);
@@ -304,6 +306,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
                     double rhs = pop(stack)->number;
                     operatorPre(stack, rhs, tmpChar, error);
                     if (*error != 0) {
+                        freeStack(stack);
                         return;
                     }
                 }
@@ -314,12 +317,14 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
                 if (!checkNumber(num, numLen)) {
                     *error = 5;
                     printf("%s不是数字.error = 5.",num);
+                    freeStack(stack);
                     return;
                 }
                 double rhs = atof(num);
                 numLen = 0;
                 operatorPre(stack, rhs, tmpChar, error);
                 if (*error != 0) {
+                    freeStack(stack);
                     return;
                 }
             }
@@ -329,11 +334,13 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
         {
             if (numLen != 0) {
                 *error = 6;
+                freeStack(stack);
                 printf("数字%s后不能直接放括号,请放运算符.error = 6",num);
                 return;
             }
             if (preIsRPar) {
                 *error = 10;
+                freeStack(stack);
                 printf("左括号不能直接右括号后面.error = 10");
                 return;
             }
@@ -350,6 +357,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
                 rhs = rhsData->number;
             }else{
                 *error = 7;
+                freeStack(stack);
                 printf("右括号前应该为数字.error = 7");
                 return;
             }
@@ -367,6 +375,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
             ///检查栈顶是不是左括号
             if (isEmpty(stack) || top(stack)->type != 1 || top(stack)->opertor != LPar) {
                 *error = 11;
+                freeStack(stack);
                 printf("左右括号没有成对出现.error = 11\n");
                 return;
             }
@@ -385,6 +394,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
                     rhs = rhsData->number;
                 }else{
                     *error = 5;
+                    freeStack(stack);
                     printf("%s不是数字.error = 5.",num);
                     return;
                 }
@@ -401,6 +411,7 @@ void PPFAnalyticalFormula(char * array,int length,int *error,double *res) {
                 return;
             }else{
                 *error = 6;
+                freeStack(stack);
                 printf("公式中存在不合法字符:%c\n.error = 6 ",tmpChar);
                 return;
             }
